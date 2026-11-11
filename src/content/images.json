@@ -1,0 +1,336 @@
+{
+  "hero-burger": {
+    "w": 1024,
+    "h": 1024,
+    "widths": [
+      420,
+      720,
+      1024
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "hero-depth": {
+    "w": 1024,
+    "h": 1024,
+    "widths": [
+      512
+    ],
+    "formats": [
+      "webp"
+    ]
+  },
+  "layer-bun-top": {
+    "w": 682,
+    "h": 295,
+    "widths": [
+      360,
+      640
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "layer-lettuce": {
+    "w": 711,
+    "h": 230,
+    "widths": [
+      360,
+      640
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "layer-tomato": {
+    "w": 666,
+    "h": 176,
+    "widths": [
+      360,
+      640
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "layer-cheese": {
+    "w": 672,
+    "h": 199,
+    "widths": [
+      360,
+      640
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "layer-patty": {
+    "w": 709,
+    "h": 207,
+    "widths": [
+      360,
+      640
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "layer-bun-bottom": {
+    "w": 619,
+    "h": 261,
+    "widths": [
+      360
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "menu-smash": {
+    "w": 1024,
+    "h": 1024,
+    "widths": [
+      480,
+      760,
+      1024
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "menu-bbq": {
+    "w": 1024,
+    "h": 1024,
+    "widths": [
+      480,
+      760,
+      1024
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "menu-special": {
+    "w": 1024,
+    "h": 1024,
+    "widths": [
+      480,
+      760,
+      1024
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "menu-truffle": {
+    "w": 1024,
+    "h": 1024,
+    "widths": [
+      480,
+      760,
+      1024
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "side-fries": {
+    "w": 1024,
+    "h": 1024,
+    "widths": [
+      400,
+      720
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "side-truffle-fries": {
+    "w": 1024,
+    "h": 1024,
+    "widths": [
+      400,
+      720
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "drink-lemonade": {
+    "w": 1024,
+    "h": 1024,
+    "widths": [
+      400,
+      720
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "drink-shake": {
+    "w": 1024,
+    "h": 1024,
+    "widths": [
+      400,
+      720
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "dip-spicy": {
+    "w": 560,
+    "h": 560,
+    "widths": [
+      240,
+      440
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "dip-boys": {
+    "w": 560,
+    "h": 560,
+    "widths": [
+      240,
+      440
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "dip-truffle": {
+    "w": 560,
+    "h": 560,
+    "widths": [
+      240,
+      440
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "storefront": {
+    "w": 1024,
+    "h": 1536,
+    "widths": [
+      480,
+      760,
+      1024
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "interior-counter": {
+    "w": 1536,
+    "h": 1024,
+    "widths": [
+      640,
+      1024,
+      1536
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "interior-seating": {
+    "w": 1536,
+    "h": 1024,
+    "widths": [
+      640,
+      1024,
+      1536
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "pickup-handoff": {
+    "w": 1536,
+    "h": 1024,
+    "widths": [
+      640,
+      1024,
+      1536
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "pickup-shelf": {
+    "w": 1024,
+    "h": 1536,
+    "widths": [
+      480,
+      760,
+      1024
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "packaging-set": {
+    "w": 1536,
+    "h": 1024,
+    "widths": [
+      640,
+      1024,
+      1536
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "griddle-smash": {
+    "w": 1536,
+    "h": 1024,
+    "widths": [
+      640,
+      1024,
+      1536
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  },
+  "lifestyle-bite": {
+    "w": 1024,
+    "h": 1536,
+    "widths": [
+      480,
+      760,
+      1024
+    ],
+    "formats": [
+      "avif",
+      "webp"
+    ]
+  }
+}
