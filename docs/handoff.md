@@ -50,7 +50,7 @@
 ## Deployment blocker and next commands
 Creating a GitHub repository from this session was refused by a permission check. Pushing binaries through the Vercel API one tool call at a time isn't practical (6 MB build plus 42 MB masters). The site is committed locally on `main`.
 
-To deploy from your machine (repo in the downloaded bundle):
+To deploy from your machine, unpack the git bundle first: `git clone burger-boys-v2.bundle burger-boys`. Then:
 
 ```bash
 cd burger-boys
