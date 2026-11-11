@@ -9,6 +9,9 @@
   - Unknown routes return 404 with the custom 404 page.
 - **Vercel Authentication** is on in its standard mode, so preview and deployment URLs require login. The production domain is meant to stay public, but check it once in a private window.
 
+## v2.1 motion upgrade
+See `docs/motion-audit.md` (bugs found, what changed, verification) and `docs/media/` (before/after recording, anatomy stills).
+
 ## Implemented
 | Section | What it does |
 | --- | --- |

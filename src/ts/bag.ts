@@ -86,7 +86,8 @@ function feedback(btn: HTMLElement, id: ItemId) {
   }
   const target = visibleBagButton();
   if (!target || !motionOK()) return;
-  const card = btn.closest('.mi, .side-card, .dip, .tray');
+  if (target.closest('#nav')) gsap.to('#nav', { yPercent: 0, duration: 0.3, overwrite: 'auto' }); // bring a hidden nav back so the bag is visible
+  const card = btn.closest('.mi, .side-card, .dip, .tray, .spot-card');
   const img = card?.querySelector<HTMLImageElement>('img');
   const src = img?.currentSrc || largest(CATALOG[id].image);
   const a = btn.getBoundingClientRect(),
@@ -104,7 +105,12 @@ function feedback(btn: HTMLElement, id: ItemId) {
     .timeline({
       onComplete: () => {
         f.remove();
-        gsap.fromTo(target, { scale: 1.25, rotate: -12 }, { scale: 1, rotate: 0, duration: 0.6, ease: 'elastic.out(1,.4)' });
+        // land: the bag compresses, then rebounds; the count pops once
+        gsap
+          .timeline()
+          .to(target, { scaleX: 1.18, scaleY: 0.78, duration: 0.1, ease: 'power2.out' })
+          .to(target, { scaleX: 1, scaleY: 1, duration: 0.7, ease: 'elastic.out(1, 0.35)' });
+        gsap.fromTo(target.querySelector('[data-bag-count]'), { scale: 1.6 }, { scale: 1, duration: 0.45, ease: 'back.out(3)' });
       },
     })
     .to(f, { x: x1, duration: 0.8, ease: 'power1.inOut' }, 0)

@@ -1,0 +1,705 @@
+/* ==========================================================================
+   Motion layer (v2.1): pink ribbon, burger anatomy, menu spotlight, combo fly, takeaway props.
+   Static/no-JS defaults are always legible; JS only animates from these states.
+   ========================================================================== */
+
+/* ---------------- P1 · pink ribbon ---------------- */
+.marquee {
+  position: relative;
+  z-index: 3;
+  background: var(--pink);
+  padding: 16px 0 14px;
+  overflow-x: clip;
+  overflow-y: visible;
+}
+/* scalloped bottom edge, matching the bag/box wave in the identity */
+.marquee::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% - 1px);
+  height: 18px;
+  background: radial-gradient(circle at 50% 0, var(--pink) 17.5px, transparent 18.5px) 0 0 / 36px 18px repeat-x;
+  pointer-events: none;
+}
+.mq-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+.mq-group {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding-right: 30px;
+  flex: none;
+}
+.mq-group .disp {
+  font-size: clamp(26px, 3.8vw, 50px);
+  white-space: nowrap;
+}
+.mq-sun {
+  display: block;
+  flex: none;
+  width: clamp(32px, 4.2vw, 54px);
+  height: clamp(32px, 4.2vw, 54px);
+  transform: rotate(var(--roll, 0deg));
+}
+.mq-sun svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------------- P2 · anatomy ---------------- */
+.anatomy {
+  background: var(--cream);
+  position: relative;
+  overflow-x: clip;
+}
+.anat-pin {
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  grid-template-areas: 'head stage' 'ui stage';
+  grid-template-rows: auto 1fr;
+  column-gap: 40px;
+  width: min(1240px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 108px 0 36px;
+  position: relative;
+}
+.anat-head {
+  grid-area: head;
+  align-self: end;
+}
+.anat-ui {
+  grid-area: ui;
+}
+.anat-title {
+  font-size: clamp(40px, 4.6vw, 72px);
+}
+.anat-title em {
+  font-style: normal;
+  color: var(--neon);
+}
+.anat-sub {
+  margin: 14px 0 22px;
+  font-weight: 600;
+  opacity: 0.78;
+  max-width: 440px;
+}
+.anat-ctrl {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.btn-ghost {
+  background: transparent;
+}
+#anatToggle {
+  min-width: 190px;
+}
+#anatToggle[aria-pressed='true'] {
+  background: var(--sun);
+}
+.anat-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  max-width: 470px;
+}
+.anat-list button {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 46px;
+  padding: 8px 12px;
+  border: 2.5px solid var(--ink);
+  border-radius: 14px;
+  background: #fff;
+  transition:
+    background 0.2s,
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+.anat-list button:hover {
+  transform: translateY(-2px);
+}
+.anat-list button:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+.anat-list button[aria-pressed='true'] {
+  background: var(--sun);
+  box-shadow: 0 4px 0 var(--ink);
+}
+.anat-list .n {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--neon);
+}
+.anat-list .nm {
+  font-weight: 900;
+  font-stretch: 110%;
+  text-transform: uppercase;
+  font-size: 14px;
+  line-height: 1.05;
+}
+.anat-active-tx {
+  margin: 16px 0 0;
+  font-weight: 600;
+  font-size: 15px;
+  min-height: 2.8em;
+  max-width: 470px;
+}
+.anat-stage {
+  grid-area: stage;
+  align-self: center;
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 0;
+}
+.anat-float {
+  position: relative;
+  width: min(30vw, 430px, calc((100svh - 170px) * 0.729));
+}
+.anat-burger {
+  --shadow: 1;
+  container-type: inline-size;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1024 / 1404;
+  perspective: 900px;
+  transform-origin: 50% 72%;
+}
+/* --p: 0 = assembled, 1 = taken apart. Default 1 so no-JS / reduced motion shows the exploded view. */
+.al {
+  --p: 1;
+  position: absolute;
+  left: calc(var(--x) / 1024 * 100%);
+  width: calc(var(--w) / 1024 * 100%);
+  top: calc(var(--ay) / 1404 * 100%);
+  transform: translate3d(calc(var(--dx) * var(--p) * 100cqw / 1024), calc(var(--d) * var(--p) * 100cqw / 1024), 0)
+    rotate(calc(var(--r) * var(--p) * 1deg)) rotateX(calc(var(--rx) * var(--p) * 1deg)) scale(calc(1 + var(--sc) * var(--p)));
+  will-change: transform;
+}
+.al picture {
+  display: block;
+  transition:
+    transform 0.45s var(--ease),
+    filter 0.35s;
+}
+.al img {
+  width: 100%;
+  filter: drop-shadow(0 10px 10px rgba(30, 20, 10, 0.18));
+}
+.al[data-i='5']::before {
+  content: '';
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: -14%;
+  height: 26%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(40, 25, 10, 0.34), transparent);
+  opacity: calc(0.35 + 0.65 * var(--shadow));
+  transform: scaleX(calc(1 - var(--p) * 0.22));
+  z-index: -1;
+}
+.anat-burger.focus .al:not(.on) picture {
+  filter: saturate(0.6) contrast(0.92);
+  transform: scale(0.97);
+}
+.anat-burger .al.on {
+  z-index: 20 !important;
+}
+.anat-burger.focus .al.on picture {
+  transform: scale(1.08);
+}
+/* anchored callouts: children of each layer, so they track it */
+.co {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  padding-left: calc((1024 - var(--x) - var(--w)) * 100cqw / 1024 + 34px);
+  width: max-content;
+  transform: translateY(-50%) rotate(calc(var(--r) * var(--p) * -1deg));
+}
+.anat-burger.focus .al:not(.on) .co-in {
+  opacity: 0.45;
+}
+.co-in {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.co-in::before {
+  content: '';
+  position: absolute;
+  right: calc(100% + 4px);
+  top: 50%;
+  width: calc((1024 - var(--x) - var(--w)) * 100cqw / 1024 + 26px);
+  border-top: 2px dashed var(--ink);
+}
+.co-n {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  background: #fff;
+  display: grid;
+  place-items: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--neon);
+}
+.co-b {
+  display: flex;
+  flex-direction: column;
+  width: 220px;
+  line-height: 1.25;
+  padding: 6px 10px;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  transition:
+    background 0.25s,
+    border-color 0.25s;
+}
+.co-b strong {
+  font-weight: 900;
+  font-stretch: 110%;
+  text-transform: uppercase;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+}
+.co-b span {
+  display: none;
+  font-size: 13px;
+  opacity: 0.85;
+}
+.al.on .co-b span {
+  display: block;
+}
+.al.on .co-b {
+  background: var(--sun);
+  border-color: var(--ink);
+}
+.al.on .co-n {
+  background: var(--sun);
+  color: var(--ink);
+}
+.anatomy .stamp {
+  --s: 150px;
+  --bg: var(--sun);
+  font-size: 22px;
+  position: absolute;
+  left: calc(min(30vw, 430px) * 0.68);
+  bottom: 4%;
+  z-index: 12;
+  transform: rotate(-10deg);
+}
+
+@media (min-width: 901px) and (max-width: 1180px) {
+  .anat-pin {
+    grid-template-columns: 0.85fr 1.15fr;
+  }
+  .anat-float {
+    width: min(27vw, 320px, calc((100svh - 170px) * 0.729));
+  }
+  .co-b {
+    width: 170px;
+  }
+  .co-b span {
+    font-size: 12px;
+  }
+}
+@media (min-width: 901px) and (max-height: 800px) {
+  .anat-pin {
+    padding-top: 92px;
+  }
+  .anat-sub {
+    margin-bottom: 14px;
+  }
+  .anat-list button {
+    min-height: 40px;
+    padding: 6px 10px;
+  }
+}
+@media (max-width: 900px) {
+  .anat-pin {
+    min-height: 0;
+    grid-template-columns: 1fr;
+    grid-template-areas: 'head' 'stage' 'ui';
+    grid-template-rows: auto;
+    row-gap: 22px;
+    padding: 90px 0 70px;
+  }
+  .anat-stage {
+    padding-left: 8%;
+  }
+  .anat-float {
+    width: min(40vw, 320px);
+  }
+  .co-b {
+    width: 190px;
+  }
+  .anatomy .stamp {
+    --s: 112px;
+    font-size: 16px;
+    left: auto;
+    right: 4%;
+  }
+  .anat-list {
+    max-width: none;
+  }
+}
+@media (max-width: 600px) {
+  .anat-stage {
+    justify-content: center;
+    padding: 0 60px 0 0;
+  }
+  .anat-float {
+    width: min(58vw, 260px);
+  }
+  .co-b {
+    display: none;
+  }
+  .co {
+    padding-left: calc((1024 - var(--x) - var(--w)) * 100cqw / 1024 + 18px);
+  }
+  .co-in::before {
+    width: calc((1024 - var(--x) - var(--w)) * 100cqw / 1024 + 12px);
+  }
+  .anat-ctrl .btn {
+    flex: 1;
+    padding-inline: 10px;
+    min-width: 0;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .anat-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .anat-list .nm {
+    font-size: 12.5px;
+  }
+  .anatomy .stamp {
+    --s: 92px;
+    font-size: 13px;
+    right: 0;
+    bottom: 0;
+  }
+  .anat-active-tx {
+    background: #fff;
+    border: 2.5px solid var(--ink);
+    border-radius: 14px;
+    padding: 10px 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .al picture,
+  .co-b,
+  .anat-list button {
+    transition: none !important;
+  }
+}
+
+/* ---------------- P3 · hero planes ---------------- */
+.med-wrap {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---------------- P4 · menu explore + spotlight ---------------- */
+.stage-explore {
+  display: none;
+}
+@media (min-width: 901px) {
+  .stage-explore {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 20px;
+    background: transparent;
+    border: 0;
+    border-radius: 29px;
+    cursor: zoom-in;
+    color: var(--ink);
+  }
+  .stage-explore span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--cream);
+    border: 2.5px solid var(--ink);
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 13px;
+    box-shadow: 0 3px 0 var(--ink);
+    transition: transform 0.25s var(--ease);
+  }
+  .stage-explore:hover span,
+  .stage-explore:focus-visible span {
+    transform: scale(1.06) rotate(-2deg);
+  }
+  .stage-explore:focus-visible {
+    outline: 3px solid var(--sun);
+    outline-offset: -6px;
+  }
+}
+.mi-photo {
+  border: 0;
+  padding: 0;
+  background: none;
+  width: 100%;
+  position: relative;
+  cursor: zoom-in;
+  overflow: hidden;
+}
+.mi-zoom {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cream);
+  border: 2.5px solid var(--ink);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+.mi-explore {
+  border: 0;
+  background: none;
+  padding: 10px 4px;
+  font-weight: 800;
+  font-size: 12.5px;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.flip-proxy {
+  position: fixed;
+  z-index: 140;
+  object-fit: cover;
+  pointer-events: none;
+  box-shadow: 0 20px 50px rgba(10, 30, 34, 0.35);
+}
+.spot-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 115;
+  background: rgba(10, 53, 59, 0.72);
+}
+.spot {
+  position: fixed;
+  inset: 0;
+  z-index: 116;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  pointer-events: none;
+}
+.spot[hidden],
+.spot-scrim[hidden] {
+  display: none;
+}
+.spot-card {
+  --card: 1;
+  pointer-events: auto;
+  position: relative;
+  width: min(1040px, 100%);
+  max-height: calc(100svh - 48px);
+  overflow: auto;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  background: rgba(255, 246, 232, var(--card));
+  border: 3px solid rgba(20, 20, 20, var(--card));
+  border-radius: 32px;
+  box-shadow: 0 calc(12px * var(--card)) 0 rgba(20, 20, 20, var(--card));
+}
+.spot-media {
+  margin: 14px;
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--bg, var(--sky));
+  aspect-ratio: 1;
+}
+.spot-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.spot-body {
+  padding: 36px 34px 30px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  opacity: var(--card);
+}
+.spot-body h3 {
+  font-size: clamp(40px, 4.4vw, 64px);
+}
+.spot-body h3 small {
+  display: block;
+  font-size: 0.4em;
+  letter-spacing: 0;
+}
+.spot-desc {
+  margin: 0;
+  font-weight: 600;
+  font-size: 17px;
+}
+.spot-ing {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.spot-ing li {
+  border: 2.5px solid var(--ink);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-weight: 800;
+  font-size: 13px;
+  text-transform: uppercase;
+  background: #fff;
+}
+.spot-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 2px dashed rgba(20, 20, 20, 0.2);
+}
+.spot-row .price {
+  font-size: 40px;
+  margin-right: auto;
+}
+.spot-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+}
+@media (max-width: 760px) {
+  .spot {
+    padding: 12px;
+    align-items: end;
+  }
+  .spot-card {
+    grid-template-columns: 1fr;
+    max-height: calc(100svh - 24px);
+  }
+  .spot-media {
+    margin: 10px 10px 0;
+    aspect-ratio: 1.15;
+  }
+  .spot-body {
+    padding: 18px 20px 22px;
+  }
+  .spot-row .price {
+    font-size: 32px;
+  }
+}
+
+/* ---------------- P6 · takeaway props ---------------- */
+.togo-stage {
+  overflow: visible;
+}
+.togo-pic {
+  border-radius: 29px;
+  overflow: hidden;
+}
+.ticket {
+  --lift: 0;
+  z-index: 3;
+  box-shadow: 0 calc(6px + var(--lift) * 26px) calc(var(--lift) * 30px) rgba(20, 20, 20, calc(0.28 - var(--lift) * 0.1));
+}
+.seal {
+  --lift: 0;
+  left: 50%;
+  right: auto;
+  top: 65%;
+  bottom: auto;
+  z-index: 3;
+  filter: drop-shadow(0 calc(4px + var(--lift) * 24px) calc(var(--lift) * 16px) rgba(20, 20, 20, calc(0.3 - var(--lift) * 0.12)));
+}
+.tape {
+  position: absolute;
+  top: -20px;
+  right: 9%;
+  z-index: 4;
+  transform: rotate(5deg);
+  transform-origin: 0 50%;
+  background: color-mix(in srgb, var(--pink) 88%, white);
+  border-inline: 2px dashed rgba(20, 20, 20, 0.25);
+  padding: 9px 26px;
+  box-shadow: 0 4px 0 rgba(20, 20, 20, 0.15);
+}
+.tape span {
+  font-weight: 900;
+  font-stretch: 110%;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.tp {
+  background-image: radial-gradient(rgba(120, 80, 30, 0.1) 1px, transparent 1.2px);
+}
+@media (max-width: 900px) {
+  .seal {
+    width: 64px;
+    height: 64px;
+  }
+  .tape {
+    right: 6%;
+    top: -16px;
+    padding: 7px 16px;
+  }
+  .tape span {
+    font-size: 11px;
+  }
+}
+
+/* ---------------- P7 · ambient loops pause when their section is off screen ---------------- */
+.is-off .rays,
+.is-off .cloud,
+.is-off .medallion,
+.is-off .order-tag .arr {
+  animation-play-state: paused;
+}
+
+/* sections whose entrances start off-canvas (clip ≠ scroll container, so sticky still works) */
+.menu,
+.combo,
+.sides,
+.togo,
+.story,
+.visit {
+  overflow-x: clip;
+}

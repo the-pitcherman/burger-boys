@@ -51,7 +51,7 @@ const hero = () => `
       </div>
     </div>
     <div class="hero-stage" id="heroStage">
-      <svg class="medallion" viewBox="-60 -60 120 120" aria-hidden="true"><use href="#scal" ${U}/></svg>
+      <div class="med-wrap" aria-hidden="true"><svg class="medallion" viewBox="-60 -60 120 120"><use href="#scal" ${U}/></svg></div>
       <div class="hero-burger" id="heroBurger">
         ${picture('hero-burger', { alt: 'The Smash Classic: a towering plant-based smash burger with melted cheese, iceberg, tomato and pink Boys Sauce on a toasted sesame bun', sizes: '(max-width: 900px) 82vw, 46vw', eager: true, priority: true, cls: 'hero-pic' })}
       </div>
@@ -63,10 +63,19 @@ const hero = () => `
   </div>
   <div class="scallop" style="--c:var(--pink)" aria-hidden="true"></div>
 </section>
-<div class="marquee" aria-hidden="true"><div class="mq-track" id="mq">${[0, 1].map(() => `<div class="mq-group">${['Guilt-free pleasures', '100% plant-based', '100% delicious', 'Good mood food'].map((t) => `<span class="disp">${t}</span><svg><use href="#sun"/></svg>`).join('')}</div>`).join('')}</div></div>`;
+<div class="marquee" aria-hidden="true"><div class="mq-track" id="mq">${[0, 1, 2].map(() => `<div class="mq-group">${['Guilt-free pleasures', '100% plant-based', '100% delicious', 'Good mood food'].map((t) => `<span class="disp">${t}</span><span class="mq-sun"><svg><use href="#sun"/></svg></span>`).join('')}</div>`).join('')}</div></div>`;
 
 /* ---------------- anatomy ---------------- */
 const AY = [0, 160, 225, 261, 330, 357]; // assembled offsets (source px), tuned visually — see docs/assets.md
+/** per-layer motion personality when opened: x drift (source px), z-rotation, x-tilt (deg), extra scale */
+const LAYER_MOTION = [
+  { dx: 10, r: -4, rx: 8, sc: 0.05 },
+  { dx: -18, r: 3, rx: 4, sc: 0.02 },
+  { dx: 22, r: -2.5, rx: 4, sc: 0.02 },
+  { dx: -14, r: 2, rx: 3, sc: 0.02 },
+  { dx: 16, r: -3, rx: 5, sc: 0.03 },
+  { dx: -6, r: 1.5, rx: 6, sc: 0.02 },
+];
 const anatomy = () => {
   const L = boxes.layers as Record<string, { x: number; y: number; w: number; h: number }>;
   const asmH = AY[5] + L['bun-bottom'].h;
@@ -77,23 +86,30 @@ const anatomy = () => {
     const b = L[a.id];
     const ay = AY[i] + pad;
     const ey = b.y - y0;
-    return `<div class="al" data-i="${i}" style="--x:${b.x};--w:${b.w};--ay:${ay.toFixed(0)};--d:${(ey - ay).toFixed(0)};z-index:${10 - i}">${picture(`layer-${a.id}` as ImageKey, { alt: '', sizes: '(max-width: 900px) 60vw, 34vw' })}</div>`;
+    const m = LAYER_MOTION[i];
+    return `<div class="al" data-i="${i}" style="--x:${b.x};--w:${b.w};--ay:${ay.toFixed(0)};--d:${(ey - ay).toFixed(0)};--dx:${m.dx};--r:${m.r};--rx:${m.rx};--sc:${m.sc};z-index:${10 - i}">${picture(`layer-${a.id}` as ImageKey, { alt: '', sizes: '(max-width: 900px) 60vw, 30vw' })}<span class="co" data-i="${i}"><span class="co-in"><span class="co-n">0${i + 1}</span><span class="co-b"><strong>${a.name}</strong><span>${a.text}</span></span></span></span></div>`;
   }).join('');
   return `
 <section class="anatomy" id="inside" aria-labelledby="anatTitle">
   <div class="anat-pin">
-    <div class="anat-copy">
+    <div class="anat-head">
       <p class="eyebrow">Anatomy of a good mood</p>
       <h2 class="disp anat-title" id="anatTitle">What's inside a <em>Burger Boy?</em></h2>
-      <p class="anat-sub">Scroll to take The Smash Classic apart, or tap an ingredient.</p>
-      <ol class="anat-list" id="anatList">
-        ${ANATOMY.map((a, i) => `<li><button type="button" data-i="${i}" aria-pressed="false"><span class="n">0${i + 1}</span><span class="nm">${a.name}</span></button><p class="tx">${a.text}</p></li>`).join('')}
-      </ol>
-      <p class="anat-active-tx" id="anatActive" aria-live="polite">${ANATOMY[0].name}: ${ANATOMY[0].text}</p>
+      <p class="anat-sub">Six layers, zero animals. Scroll to take The Smash Classic apart, or use the controls.</p>
     </div>
     <div class="anat-stage">
-      <div class="anat-burger" id="anatBurger" role="img" aria-label="The Smash Classic, layer by layer: ${ANATOMY.map((a) => a.name).join(', ')}">${layers}</div>
+      <div class="anat-float"><div class="anat-burger" id="anatBurger" role="img" aria-label="The Smash Classic, layer by layer: ${ANATOMY.map((a) => a.name).join(', ')}">${layers}</div></div>
       <div class="badge stamp" id="stamp" aria-hidden="true">Zero<br>animals.<br>All<br>flavour.</div>
+    </div>
+    <div class="anat-ui">
+      <div class="anat-ctrl">
+        <button type="button" class="btn btn-pink" id="anatToggle" aria-pressed="false" aria-controls="anatBurger">Take it apart</button>
+        <button type="button" class="btn btn-ghost" id="anatReset">Reset burger</button>
+      </div>
+      <ol class="anat-list" id="anatList" aria-label="Ingredients">
+        ${ANATOMY.map((a, i) => `<li><button type="button" data-i="${i}" aria-pressed="false"><span class="n">0${i + 1}</span><span class="nm">${a.name}</span></button></li>`).join('')}
+      </ol>
+      <p class="anat-active-tx" id="anatActive" aria-live="polite">Tap an ingredient to inspect it.</p>
     </div>
   </div>
 </section>`;
@@ -107,21 +123,23 @@ const menu = () => `
     <p>Four smash burgers. Zero animals. Every one comes on a toasted brioche-style bun with a lick of Boys Sauce. Pick your mood.</p>
   </header>
   <div class="menu-grid">
-    <div class="stage" id="stage" style="--bg:${BURGERS[0].bg}" aria-hidden="true">
-      ${BURGERS.map((b, i) => `<div class="stage-img${i === 0 ? ' on' : ''}" data-id="${b.id}" style="--bg:${b.bg}">${picture(b.image, { alt: '', sizes: '(max-width: 900px) 1px, 52vw' })}</div>`).join('')}
-      <div class="stage-cap"><span class="disp" id="stageName">${BURGERS[0].short}</span><span class="stage-price" id="stagePrice">${eur(BURGERS[0].price)}</span></div>
+    <div class="stage" id="stage" style="--bg:${BURGERS[0].bg}">
+      ${BURGERS.map((b, i) => `<div class="stage-img${i === 0 ? ' on' : ''}" data-id="${b.id}" style="--bg:${b.bg}" aria-hidden="true">${picture(b.image, { alt: '', sizes: '(max-width: 900px) 1px, 52vw' })}</div>`).join('')}
+      <div class="stage-cap" aria-hidden="true"><span class="disp" id="stageName">${BURGERS[0].short}</span><span class="stage-price" id="stagePrice">${eur(BURGERS[0].price)}</span></div>
       ${sunSVG('stage-sun', true)}
+      <button type="button" class="stage-explore" id="stageExplore" data-explore="smash" aria-label="Explore The Smash Classic"><span>Explore ${arrow}</span></button>
     </div>
     <ol class="menu-list" id="menuList">
       ${BURGERS.map(
         (b, i) => `
       <li class="mi${i === 0 ? ' on' : ''}" data-id="${b.id}" style="--bg:${b.bg};--accent:${b.accent}">
-        <div class="mi-photo">${picture(b.image, { alt: b.alt, sizes: '(max-width: 900px) 92vw, 1px' })}</div>
+        <button type="button" class="mi-photo" data-explore="${b.id}" aria-label="Explore ${b.name}">${picture(b.image, { alt: b.alt, sizes: '(max-width: 900px) 92vw, 1px' })}<span class="mi-zoom" aria-hidden="true">Explore ${arrow}</span></button>
         <h3 class="mi-title"><button type="button" class="mi-select" data-select="${b.id}" aria-pressed="${i === 0}"><span class="num">0${i + 1}</span><span class="disp"><small>The</small> ${b.short}</span></button></h3>
         <p class="mi-desc">${b.blurb}</p>
         <div class="mi-row">
           <span class="price">${eur(b.price)}</span>
           <button type="button" class="add" data-add="${b.id}">Add to bag</button>
+          <button type="button" class="mi-explore" data-explore="${b.id}" aria-label="Explore ${b.name}">Explore</button>
           <a class="mi-combo" href="#combo" data-combo-pick="${b.id}">Combo +${eur(COMBO_UPCHARGE)}</a>
         </div>
       </li>`,
@@ -215,6 +233,7 @@ const togo = () => `
     <div class="togo-stage" id="togoStage">
       ${picture('packaging-set', { alt: 'Burger Boys takeaway set: sky-blue and pink kraft bag, burger box, fries carton, mint cup, dip pots and napkins on a yellow table', sizes: '(max-width: 1240px) 94vw, 1180px', cls: 'togo-pic' })}
       <div class="ticket" id="ticket" aria-hidden="true"><span class="t-sm">Order ticket</span><strong class="disp">Enjoy your guilt-free pleasures!</strong>${sunSVG('t-sun', false)}</div>
+      <div class="tape" id="tape" aria-hidden="true"><span>Guilt-free pleasures</span></div>
       <div class="seal" id="seal" aria-hidden="true">${sunSVG('', false)}</div>
     </div>
     <div class="togo-pair">
@@ -316,6 +335,24 @@ const footer = () => `
 </footer>
 <nav class="dock" aria-label="Quick actions"><a href="#menu">Menu</a><button type="button" data-open-bag aria-controls="drawer">Bag <span data-bag-count>0</span></button><a href="#visit">Visit</a></nav>`;
 
+/* ---------------- menu spotlight (P4) ---------------- */
+const spotlight = () => `
+<div class="spot-scrim" id="spotScrim" hidden></div>
+<div class="spot" id="spot" role="dialog" aria-modal="true" aria-labelledby="spotTitle" hidden>
+  <div class="spot-card">
+    <div class="spot-media" id="spotMedia"><img id="spotImg" alt="" width="1024" height="1024" loading="lazy" decoding="async" src="images/menu-smash-480.webp"></div>
+    <div class="spot-body">
+      <p class="eyebrow">Signature burger</p>
+      <h3 class="disp" id="spotTitle"></h3>
+      <p class="spot-desc" id="spotDesc"></p>
+      <ul class="spot-ing" id="spotIng"></ul>
+      <div class="spot-row"><span class="price" id="spotPrice"></span><button type="button" class="add" id="spotAdd" data-add="smash">Add to bag</button></div>
+      <a class="mi-combo" id="spotCombo" href="#combo" data-combo-pick="smash">Make it a combo +${eur(COMBO_UPCHARGE)}</a>
+    </div>
+    <button type="button" class="x spot-close" id="spotClose" aria-label="Close">×</button>
+  </div>
+</div>`;
+
 /* ---------------- bag drawer ---------------- */
 const drawer = () => `
 <div class="scrim" id="scrim" hidden></div>
@@ -340,5 +377,5 @@ const drawer = () => `
 </aside>`;
 
 export function renderBody(): string {
-  return `${SPRITE}${nav()}<main id="main">${hero()}${anatomy()}${menu()}${combo()}${sides()}${togo()}${story()}${visit()}</main>${footer()}${drawer()}`;
+  return `${SPRITE}${nav()}<main id="main">${hero()}${anatomy()}${menu()}${combo()}${sides()}${togo()}${story()}${visit()}</main>${footer()}${spotlight()}${drawer()}`;
 }
