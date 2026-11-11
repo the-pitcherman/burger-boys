@@ -8,7 +8,7 @@
  */
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { $, $$, fineMQ } from './dom';
+import { $, $$, fineMQ, whenMotion, whenReduced } from './dom';
 
 gsap.registerPlugin(ScrollTrigger);
 gsap.defaults({ ease: 'power3.out' });
@@ -69,14 +69,14 @@ export function initMotion() {
   const mm = gsap.matchMedia();
   const neon = $('#neonSun');
 
-  mm.add('(prefers-reduced-motion: reduce)', () => {
+  mm.add(whenReduced(), () => {
     neon?.classList.remove('off');
   });
 
   mm.add(
     {
-      desk: '(min-width: 901px) and (prefers-reduced-motion: no-preference)',
-      mob: '(max-width: 900px) and (prefers-reduced-motion: no-preference)',
+      desk: whenMotion('(min-width: 901px)'),
+      mob: whenMotion('(max-width: 900px)'),
     },
     (ctx) => {
       const desk = Boolean(ctx.conditions?.desk);

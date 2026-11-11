@@ -8,7 +8,7 @@
  */
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { $, $$, fineMQ } from './dom';
+import { $, $$, fineMQ, whenMotion } from './dom';
 
 const CYCLE = 26; // seconds per group width at rest
 const MAX_BOOST = 3.2; // multiplier clamp (|speed| ≤ (1 + MAX_BOOST) × base)
@@ -20,7 +20,7 @@ export function initRibbon() {
   gsap.registerPlugin(ScrollTrigger);
 
   const mm = gsap.matchMedia();
-  mm.add('(prefers-reduced-motion: no-preference)', () => {
+  mm.add(whenMotion(), () => {
     const groups = $$('.mq-group', track);
     let w = groups[0].getBoundingClientRect().width;
     const ro = new ResizeObserver(() => (w = groups[0].getBoundingClientRect().width));

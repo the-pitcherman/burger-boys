@@ -9,6 +9,7 @@ import { initMotion } from './ts/motion';
 import { initRibbon } from './ts/ribbon';
 import { initSpotlight } from './ts/spotlight';
 import { initAmbient } from './ts/ambient';
+import { initMotionPref } from './ts/motionPref';
 import { fineMQ, motionOK } from './ts/dom';
 
 initNav();
@@ -20,6 +21,7 @@ initRibbon();
 initMotion();
 initSpotlight();
 initAmbient();
+initMotionPref();
 
 // Three.js hero: progressive enhancement only — after load, on fine pointers, with motion allowed.
 const hasWebGL = () => {

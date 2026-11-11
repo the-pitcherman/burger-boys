@@ -50,3 +50,17 @@ Libraries: GSAP **Flip** and **ScrollToPlugin** were added (both ship in the exi
 - Mobile LCP moved from 2.2–2.7 s to 2.3–2.9 s (lab), mostly the larger main bundle (Flip + ScrollTo). The hero image is still the preloaded LCP element.
 - No sun-shaped progress indicator or "dip the fry" mini-interaction (optional extras), to keep the hierarchy focused.
 - Real iOS Safari hasn't been tested: emulated only. `overflow-x: clip` and container-query units need iOS 16+.
+
+## v2.1.1: motion switch (follow-up)
+**Reported:** "the hero animation doesn't work nor the other ones."
+
+**Cause:** the most likely explanation is that the viewing device reports **reduce motion**. That's Windows "Animation effects" off, macOS/iOS "Reduce motion", or some remote-desktop and VM setups. Every timeline deliberately stood down for that setting, so the whole site looked static. The same root cause fits the earlier "ribbon looks static" report.
+
+**Fix:** a single motion mode is decided in `<head>` (`html.reduce-motion`). It follows the device by default, and the visitor can override it:
+- When the device asks for reduced motion, a notice says animations are paused and offers **Play animations**.
+- The footer has an **Animations: On/Off** switch.
+- The choice is stored in `localStorage` (`bb-motion`).
+
+All `gsap.matchMedia` branches and CSS reduced-motion rules read this mode (`whenMotion()` / `whenReduced()` in `src/ts/dom.ts`).
+
+**Verified (emulated reduced-motion device):** the notice shows and the page is static. After Play, the hero intro, pointer tilt, ribbon and pinned anatomy all run, and the choice persists across reloads. The footer switch turns animations off again. Devices without reduce motion are unaffected.

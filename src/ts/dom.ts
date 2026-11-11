@@ -4,7 +4,34 @@ export const $$ = <T extends Element = HTMLElement>(s: string, c: ParentNode = d
 export const reduceMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
 export const fineMQ = window.matchMedia('(hover: hover) and (pointer: fine)');
 export const desktopMQ = window.matchMedia('(min-width: 901px)');
-export const motionOK = () => !reduceMQ.matches;
+/**
+ * Motion mode: follows the OS "reduce motion" setting unless the visitor chose otherwise with the on-page
+ * switch (stored as bb-motion = on | off). Decided once in <head> (html.reduce-motion) so CSS and JS agree.
+ */
+export const REDUCE = document.documentElement.classList.contains('reduce-motion');
+export const SYSTEM_REDUCE = document.documentElement.classList.contains('sys-reduce');
+export const motionOK = () => !REDUCE;
+const NEVER = '(max-width: 0px)';
+const ALWAYS = '(min-width: 0px)';
+/** gsap.matchMedia condition that only matches when motion is on (optionally narrowed by a width query) */
+export const whenMotion = (q = ALWAYS) => (REDUCE ? NEVER : q);
+/** gsap.matchMedia condition for the reduced-motion branch */
+export const whenReduced = () => (REDUCE ? ALWAYS : NEVER);
+export function motionPref(): string | null {
+  try {
+    return localStorage.getItem('bb-motion');
+  } catch {
+    return null;
+  }
+}
+export function setMotionPref(v: 'on' | 'off') {
+  try {
+    localStorage.setItem('bb-motion', v);
+  } catch {
+    /* storage blocked: preference lasts for this page only */
+  }
+  window.location.reload();
+}
 
 let toastTimer = 0;
 export function toast(msg: string) {

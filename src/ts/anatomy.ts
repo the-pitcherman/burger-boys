@@ -12,7 +12,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { ANATOMY } from '../content/menu';
-import { $, $$ } from './dom';
+import { $, $$, whenMotion, whenReduced } from './dom';
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -190,9 +190,9 @@ export function initAnatomy() {
   const mm = gsap.matchMedia();
   mm.add(
     {
-      pin: '(min-width: 901px) and (prefers-reduced-motion: no-preference)',
-      tap: '(max-width: 900px) and (prefers-reduced-motion: no-preference)',
-      reduce: '(prefers-reduced-motion: reduce)',
+      pin: whenMotion('(min-width: 901px)'),
+      tap: whenMotion('(max-width: 900px)'),
+      reduce: whenReduced(),
     },
     (ctx) => {
       const c = ctx.conditions!;

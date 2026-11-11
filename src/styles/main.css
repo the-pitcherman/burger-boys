@@ -2261,25 +2261,23 @@ figcaption {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-@media (prefers-reduced-motion: reduce) {
-  .cloud,
-  .rays,
-  .medallion,
-  .order-tag .arr {
-    animation: none !important;
-  }
-  .btn,
-  .add,
-  .stage-img,
-  .stage-img img,
-  .side-card img,
-  .dip-img img {
-    transition: none !important;
-  }
-  html {
-    scroll-behavior: auto;
-  }
-  .js .story-text .w {
-    opacity: 1;
-  }
+.reduce-motion .cloud,
+.reduce-motion .rays,
+.reduce-motion .medallion,
+.reduce-motion .order-tag .arr {
+  animation: none !important;
+}
+.reduce-motion .btn,
+.reduce-motion .add,
+.reduce-motion .stage-img,
+.reduce-motion .stage-img img,
+.reduce-motion .side-card img,
+.reduce-motion .dip-img img {
+  transition: none !important;
+}
+html.reduce-motion {
+  scroll-behavior: auto;
+}
+.js.reduce-motion .story-text .w {
+  opacity: 1;
 }

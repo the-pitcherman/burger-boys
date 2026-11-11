@@ -325,6 +325,7 @@ const footer = () => `
       .join('')}</span>${sunSVG('fsun', true)}</p>
     <div class="footer-row">
       <nav aria-label="Footer"><a href="#inside">The burger</a><a href="#menu">Menu</a><a href="#combo">Combos</a><a href="#togo">To go</a><a href="#story">Story</a><a href="#visit">Visit</a></nav>
+      <button type="button" class="motion-toggle" id="motionToggle" aria-pressed="true">Animations: <strong>On</strong></button>
       <p class="socials">Instagram · TikTok <span class="soon">coming soon</span></p>
     </div>
     <div class="footer-fine">
@@ -353,6 +354,14 @@ const spotlight = () => `
   </div>
 </div>`;
 
+/* ---------------- motion notice ---------------- */
+const motionNote = () => `
+<div class="motion-note" id="motionNote" role="status" hidden>
+  <p><strong>Animations are paused.</strong> Your device is set to reduce motion.</p>
+  <button type="button" class="btn btn-sun" id="motionPlay">Play animations</button>
+  <button type="button" class="x" id="motionDismiss" aria-label="Keep animations paused">×</button>
+</div>`;
+
 /* ---------------- bag drawer ---------------- */
 const drawer = () => `
 <div class="scrim" id="scrim" hidden></div>
@@ -377,5 +386,5 @@ const drawer = () => `
 </aside>`;
 
 export function renderBody(): string {
-  return `${SPRITE}${nav()}<main id="main">${hero()}${anatomy()}${menu()}${combo()}${sides()}${togo()}${story()}${visit()}</main>${footer()}${spotlight()}${drawer()}`;
+  return `${SPRITE}${nav()}<main id="main">${hero()}${anatomy()}${menu()}${combo()}${sides()}${togo()}${story()}${visit()}</main>${footer()}${spotlight()}${drawer()}${motionNote()}`;
 }
