@@ -1,8 +1,13 @@
 # Burger Boys v2: handoff
 
 ## What's live
-- **Not deployed to Vercel yet. Blocker below.**
-- **Private preview (Claude artifact):** the same production `dist/` build, hosted as a private Claude artifact. Shareable from its page on claude.ai.
+- **Production:** https://burger-boys.vercel.app (Vercel project `burger-boys`, team "Viktor's projects", region iad1).
+- **Repo:** https://github.com/the-pitcherman/burger-boys (private). Pushes to `main` deploy to production; other branches get preview deployments.
+- **Verified after deploy** (fetched through Vercel):
+  - `/` returns 200 with the full rendered HTML. The JS bundle, `favicon.svg` and `robots.txt` return 200.
+  - Images are served with `cache-control: public, max-age=31536000, immutable`.
+  - Unknown routes return 404 with the custom 404 page.
+- **Vercel Authentication** is on in its standard mode, so preview and deployment URLs require login. The production domain is meant to stay public, but check it once in a private window.
 
 ## Implemented
 | Section | What it does |
@@ -47,20 +52,8 @@
 - **Imagery is AI concept imagery** (see `docs/assets.md`). Replace it with real photography before launch.
 - **Unconfirmed business details** (address, hours, socials, delivery apps, ordering provider) are still placeholders by design.
 
-## Deployment blocker and next commands
-Creating a GitHub repository from this session was refused by a permission check. Pushing binaries through the Vercel API one tool call at a time isn't practical (6 MB build plus 42 MB masters). The site is committed locally on `main`.
-
-To deploy from your machine, unpack the git bundle first: `git clone burger-boys-v2.bundle burger-boys`. Then:
-
-```bash
-cd burger-boys
-gh repo create the-pitcherman/burger-boys --private --source . --push
-# then either connect the repo in Vercel (Add New → Project → Import), or:
-npx vercel link --yes --project burger-boys
-npx vercel            # preview
-npx vercel --prod     # production, once the preview checks out
-```
-Vercel settings are in `vercel.json`: framework Vite, build `npm run build`, output `dist`, immutable caching for `/images` and `/fonts`.
+## Deploying changes
+Push to `main`. Vercel builds with `npm run build` and serves `dist`. Settings are in `vercel.json`.
 
 ## Next priority
 Replace the AI concept photography with a real shoot (hero, four burgers, storefront) once the venue exists. Then confirm the address and hours so the location card and JSON-LD can go live.
